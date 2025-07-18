@@ -129,31 +129,83 @@ export default function UserData({ userEmail, linksCount, refreshLinksCount }) {
 	}
 
 	return (
-		<div className="flex flex-col gap-8 items-center justify-center my-8 mb-12 w-full">
+		<div className="w-full max-w-6xl mx-auto px-4 py-8">
 			<ToastContainer
 				position="top-right"
-				theme="light"
+				theme="dark"
 				autoClose={3000}
 				hideProgressBar={false}
 				closeOnClick
 				pauseOnHover
 				draggable
+				toastClassName="glass-morphism"
 			/>
-			{links.length > 0 &&
-				links.map((link) => (
-					<div key={link._id} className="url-container">
-						<h4>{truncate(link.title || link.original, 40)}</h4>
-						<div className="result">
-							<p className='short'>{`${process.env.NEXT_PUBLIC_BASE_URL}/r/${link.code}`}</p>
-							<div className="btns">
-								<button onClick={() => handleCopy(link.code)} className="copyBtn"><Clipboard color="black" size={20} /></button>
-								<button onClick={() => openModal(link)} className="editBtn"><Pencil color="black" size={20} /></button>
-								<button onClick={() => handleDelete(link.code)} className="deleteBtn"><Trash color="black" size={20} /></button>
+			
+			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+				{links.length > 0 &&
+					links.map((link) => (
+						<div key={link._id} className="glass-morphism p-6 rounded-2xl hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 border border-white/5 hover:border-white/10">
+							<div className="mb-4">
+								<h4 className="text-white font-semibold text-lg mb-3 leading-tight break-words">
+									{truncate(link.title || link.original, 40)}
+								</h4>
+								
+								<div className="bg-white/5 rounded-lg p-4 mb-4 border border-white/10">
+									<div className="flex items-center justify-between">
+										<p className="text-blue-400 font-medium text-sm break-all flex-1 mr-3">
+											{`${process.env.NEXT_PUBLIC_BASE_URL}/r/${link.code}`}
+										</p>
+										<div className="flex items-center space-x-2">
+											<button 
+												onClick={() => handleCopy(link.code)} 
+												className="p-2 rounded-lg hover:bg-white/10 transition-colors duration-200 group"
+												title="Copy link"
+											>
+												<Clipboard className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors duration-200" />
+											</button>
+											<button 
+												onClick={() => openModal(link)} 
+												className="p-2 rounded-lg hover:bg-white/10 transition-colors duration-200 group"
+												title="Edit link"
+											>
+												<Pencil className="w-4 h-4 text-gray-400 group-hover:text-blue-400 transition-colors duration-200" />
+											</button>
+											<button 
+												onClick={() => handleDelete(link.code)} 
+												className="p-2 rounded-lg hover:bg-white/10 transition-colors duration-200 group"
+												title="Delete link"
+											>
+												<Trash className="w-4 h-4 text-gray-400 group-hover:text-red-400 transition-colors duration-200" />
+											</button>
+										</div>
+									</div>
+								</div>
+								
+								<div className="pt-3 border-t border-white/10">
+									<p className="text-gray-400 text-sm break-all">
+										{truncate(link.original, 60)}
+									</p>
+								</div>
 							</div>
 						</div>
+					))
+				}
+				
+				{links.length === 0 && (
+					<div className="col-span-full flex items-center justify-center py-16">
+						<div className="glass-morphism p-8 rounded-2xl text-center">
+							<div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center">
+								<Clipboard className="w-8 h-8 text-purple-400" />
+							</div>
+							<h3 className="text-xl font-semibold text-white mb-2">No Links Yet</h3>
+							<p className="text-gray-400 text-sm">
+								Your shortened links will appear here once created.
+							</p>
+						</div>
 					</div>
-				))
-			}
+				)}
+			</div>
+			
 			{currentlyEditing && (
 				<EditModal
 					handleEdit={handleSubmit(handleEdit)}
