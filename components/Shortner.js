@@ -73,15 +73,6 @@ export default function Shortner({ onLinkCreated, linksCount }) {
 
 	return (
 		<div className="w-full max-w-xl mx-auto p-6 glass-morphism rounded-2xl text-white">
-			<ToastContainer
-				position="top-right"
-				theme="light"
-				autoClose={3000}
-				hideProgressBar={false}
-				closeOnClick
-				pauseOnHover
-				draggable
-			/>
 			<h1 className="text-3xl font-bold text-center mb-6">Shorten Links</h1>
 			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 				<input

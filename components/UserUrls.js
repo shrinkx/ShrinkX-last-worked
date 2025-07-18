@@ -130,30 +130,32 @@ export default function UserData({ userEmail, linksCount, refreshLinksCount }) {
 
 	return (
 		<div className="flex flex-col gap-8 items-center justify-center my-8 mb-12 w-full">
-			<ToastContainer
-				position="top-right"
-				theme="light"
-				autoClose={3000}
-				hideProgressBar={false}
-				closeOnClick
-				pauseOnHover
-				draggable
-			/>
-			{links.length > 0 &&
-				links.map((link) => (
-					<div key={link._id} className="url-container">
-						<h4>{truncate(link.title || link.original, 40)}</h4>
-						<div className="result">
-							<p className='short'>{`${process.env.NEXT_PUBLIC_BASE_URL}/r/${link.code}`}</p>
-							<div className="btns">
-								<button onClick={() => handleCopy(link.code)} className="copyBtn"><Clipboard color="black" size={20} /></button>
-								<button onClick={() => openModal(link)} className="editBtn"><Pencil color="black" size={20} /></button>
-								<button onClick={() => handleDelete(link.code)} className="deleteBtn"><Trash color="black" size={20} /></button>
+
+			<div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				{links.length > 0 &&
+					links.map((link) => (
+						<div key={link._id} className="glass-morphism p-4 rounded-2xl flex flex-col justify-between gap-4 min-h-[150px]">
+							<h4 className="text-white font-medium text-sm break-words leading-tight">{truncate(link.title || link.original, 40)}</h4>
+							<div className="flex flex-col gap-2">
+								<div className="flex items-center justify-between">
+									<p className="text-sm text-blue-400 break-all">{`${process.env.NEXT_PUBLIC_BASE_URL}/r/${link.code}`}</p>
+									<div className="flex gap-2">
+										<button onClick={() => handleCopy(link.code)} className="hover:scale-110 transition">
+											<Clipboard size={18} />
+										</button>
+										<button onClick={() => openModal(link)} className="hover:scale-110 transition">
+											<Pencil size={18} />
+										</button>
+										<button onClick={() => handleDelete(link.code)} className="hover:scale-110 transition">
+											<Trash size={18} />
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				))
-			}
+					))}
+			</div>
+			
 			{currentlyEditing && (
 				<EditModal
 					handleEdit={handleSubmit(handleEdit)}
@@ -164,6 +166,7 @@ export default function UserData({ userEmail, linksCount, refreshLinksCount }) {
 					loading={loading}
 				/>
 			)}
+
 		</div>
 	)
 }
